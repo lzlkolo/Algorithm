@@ -1,16 +1,22 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
-public class Main {
-    public static void main(String[] args) {
-        //과목수, 시험성적 입력받기
-        Scanner sc = new Scanner(System.in);
-        int subject = sc.nextInt();
+public class Main{
+    public static void main(String[] args) throws IOException {
+        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+        // 과목 수
+        int n = Integer.parseInt(bf.readLine());
+        int[] score = new int[n];
 
-        int[] score = new int[subject];
+        // 과목별 점수 socre 배열에 저장
+        StringTokenizer st = new StringTokenizer(bf.readLine());
+        score = setScore(st, score);
 
-        for (int i = 0; i < score.length; i++) {
-            score[i] = sc.nextInt();
-        }
+        // 최댓값 구하기
+        double max = 0;
+        max = getMaxScore(score);
 
         //성적 합 구하기
         int sum = 0;
@@ -18,15 +24,28 @@ public class Main {
             sum += score[i];
         }
 
-        //시험성적 중 최대값 구하기
-        double max = Integer.MIN_VALUE;
+        // 평균 구하기
+        double average = 0.0;
+        average = sum / (max * n) * 100.0;
 
+        System.out.println(average);
+    }
+
+    private static int[] setScore(StringTokenizer st, int[] score) {
         for (int i = 0; i < score.length; i++) {
-            if (score[i] > max) {
+            score[i] = Integer.parseInt(st.nextToken());
+        }
+        return score;
+    }
+
+    private static int getMaxScore(int[] score) {
+        int max = score[0];
+
+        for (int i = 1; i < score.length; i++) {
+            if (max < score[i]) {
                 max = score[i];
             }
         }
-
-        System.out.println(sum / (max * subject) * 100.0);
+        return max;
     }
 }
